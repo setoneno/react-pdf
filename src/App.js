@@ -26,7 +26,7 @@ export default class App extends Component {
           <button onClick={this.goToNextPage}>Next</button>
         </nav>
           <div>
-            <Document file="http://192.168.168.38:3000/React-1-1.pdf" 
+            <Document file="http://192.168.168.38:3000/React-1-1.pdf"                          
               //file={url}
               //file='./React.pdf'
               //file='./React-1-25.pdf'
