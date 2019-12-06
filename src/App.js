@@ -3,11 +3,17 @@ import { Document, Page, pdfjs } from "react-pdf"
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 
-class Body extends Component {
-    
-}
-
 export default class App extends Component {
+    render() {
+      return (
+        <div>
+          <Body />
+        </div>
+      );
+    }
+  }
+
+ class Body extends Component {
     constructor(props) {
         super(props);
   this.state = { numPages: null, pageNumber: 1 };
@@ -30,7 +36,14 @@ onDocumentLoadSuccess = ({ numPages }) => {
 
   componentDidMount() {
     setTimeout(() => {
-      this.setState(state => ({ pageNumber: state.pageNumber + 100}));
+      const { pageNumber, numPages } = this.state;
+      this.setState(state => ({ pageNumber: state.pageNumber }, 
+      { value: (
+      <div style={{ width: 600 }}>
+        <Document file="/linux.pdf" onLoadSuccess={this.onDocumentLoadSuccess} >
+          <Page pageNumber={pageNumber} width={600} />
+        </Document>
+      </div>) }));
     }, 2000);
   }
 
@@ -48,13 +61,7 @@ onDocumentLoadSuccess = ({ numPages }) => {
           <button onClick={this.goToPrevPage}>Prev</button>
           <button onClick={this.goToNextPage}>Next</button>
         </nav>
-
-        <div style={{ width: 600 }}>
-          <Document file="/React.pdf" onLoadSuccess={this.onDocumentLoadSuccess} >
-            <Page pageNumber={pageNumber} width={600} />
-          </Document>
-        </div>
-
+         {this.state.value}
         <p>
           Page {pageNumber} of {numPages}
         </p>
