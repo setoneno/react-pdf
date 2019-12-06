@@ -1,15 +1,38 @@
 import React, { Component } from "react";
-import './App.css';
 import { Document, Page, pdfjs } from "react-pdf"
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 
-export default class App extends Component {
-  state = { numPages: null, pageNumber: 1 };
+class Body extends Component {
+    
+}
 
-  onDocumentLoadSuccess = ({ numPages }) => {
+export default class App extends Component {
+    constructor(props) {
+        super(props);
+  this.state = { numPages: null, pageNumber: 1 };
+}
+onDocumentLoadSuccess = ({ numPages }) => {
     this.setState({ numPages });
   };
+
+//   nextDocumentLoadSuccess = ({ numPages }) => {
+//     this.setState({ numPages });
+//   };
+
+//   componentWillMount() {
+//     setTimeout(() => {
+//       this.setState({
+//          numPages: null, pageNumber: 1
+//       });
+//     }, 2000);
+//   }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState(state => ({ pageNumber: state.pageNumber + 100}));
+    }, 2000);
+  }
 
   goToPrevPage = () =>
     this.setState(state => ({ pageNumber: state.pageNumber - 1 }));
@@ -25,15 +48,13 @@ export default class App extends Component {
           <button onClick={this.goToPrevPage}>Prev</button>
           <button onClick={this.goToNextPage}>Next</button>
         </nav>
-          <div>
-            <Document file="http://192.168.168.38:3000/React-1-1.pdf"                          
-              //file={url}
-              //file='./React.pdf'
-              //file='./React-1-25.pdf'
-              onLoadSuccess={this.onDocumentLoadSuccess}>
-              <Page pageNumber={pageNumber} width={600} />                
-            </Document>
-          </div>
+
+        <div style={{ width: 600 }}>
+          <Document file="/React.pdf" onLoadSuccess={this.onDocumentLoadSuccess} >
+            <Page pageNumber={pageNumber} width={600} />
+          </Document>
+        </div>
+
         <p>
           Page {pageNumber} of {numPages}
         </p>
