@@ -2,93 +2,131 @@ import React, { Component } from "react";
 import { Document, Page, pdfjs } from "react-pdf"
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
+function ChangeButton(props) {
+	console.log("changenonaka")
+  return (
+    <a href={props.link} onClick={() => props.onClick()}>
+      {props.value}
+    </a>
+  );
+}
 
-// export default class App extends Component {
-//     render() {
-//       return (
-//         <div>
-//           <Body />
-//         </div>
-//       );
-//     }
-//   }
+let a = 0;
+console.log("letnoato")
 
 export default class App extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = { numPages: null, pageNumber: 1 };
-    //   }
-  state = { numPages: null, pageNumber: 1 };
+      state = { numPages: null, pageNumber: 1 };
 
   onDocumentLoadSuccess = ({ numPages }) => {
-      this.setState({ numPages });
-    };
+		this.setState({ numPages });
+		console.log("daunro-doowata")
+	};
+	
 
-  nextDocumentLoadSuccess = ({ numPages }) => {
-    this.setState({ numPages });
-   };
 
   goToPrevPage = () =>
     this.setState(state => ({ pageNumber: state.pageNumber - 1 }));
   goToNextPage = () =>
     this.setState(state => ({ pageNumber: state.pageNumber + 1 }));
+		
+	
+			fff() {
+				const { pageNumber, numPages } = this.state;
+				this.setState(state => ({ pageNumber: state.pageNumber }, 
+				{ value: (
+					<div>
+				<div style={{ width: 600 }}>
+					<Document file="/React.pdf" onLoadSuccess={this.onDocumentLoadSuccess} >
+						<Page pageNumber={a } width={600} />
+					</Document>
+				</div>
+				<p>
+						Page {pageNumber} of {numPages}
+				</p>
+				</div>) }));
+			}
 
-//   nextDocumentLoadSuccess = ({ numPages }) => {
-//     this.setState({ numPages });
-//   };
+  
 
-
-  componentWillMount() {
-    setTimeout(() => {
+  first() {
       const { pageNumber, numPages } = this.state;
       this.setState(state => ({ pageNumber: state.pageNumber }, 
       { value: (
         <div>
-        <nav>
-          <button onClick={this.goToPrevPage}>Prev</button>
-          <button onClick={this.goToNextPage}>Next</button>
-        </nav>
       <div style={{ width: 600 }}>
         <Document file="/React.pdf" onLoadSuccess={this.onDocumentLoadSuccess} >
-          <Page pageNumber={pageNumber} width={600} />
+          <Page pageNumber={a} width={600} />
         </Document>
       </div>
       <p>
           Page {pageNumber} of {numPages}
       </p>
       </div>) }));
-    });
   }
 
-  componentDidMount() {
-    setTimeout(() => {
+  second() {
       const { pageNumber, numPages } = this.state;
-      this.setState(state => ({ pageNumber: state.pageNumber }, 
+      this.setState(state => ({ pageNumber: state.pageNumber },
       { value: (
         <div>
-        <nav>
-          <button onClick={this.goToPrevPage}>Prev</button>
-          <button onClick={this.goToNextPage}>Next</button>
-        </nav>
       <div style={{ width: 600 }}>
-        <Document file="/linux.pdf" onLoadSuccess={this.nextDocumentLoadSuccess} >
-          <Page pageNumber={pageNumber} width={600} />
+        <Document file="/linux.pdf" onLoadSuccess={this.onDocumentLoadSuccess} >
+          <Page pageNumber={a} width={600} />
         </Document>
       </div>
       <p>
           Page {pageNumber} of {numPages}
       </p>
       </div>) }));
-    },5000);
   }
 
+
   render() {
-    // const { pageNumber, numPages } = this.state;
-    
+		console.log("renderato")
+
+		function Hoge(props) {
+			console.log(a);
+			a = a + 1;
+			console.log(a);
+			return (
+				<a href={props.link} onClick={() => props.onClick()}>
+					{props.value}
+				</a>
+			);
+		}
     return (
       <div>
-         {this.state.value}
-      </div>
+        <nav>
+          <button onClick={this.goToPrevPage}>Prev</button>
+          <Hoge onClick={() => this.fff()}/>
+				
+        </nav>
+        <ul>
+					<li>
+					<Hoge link="#3" value="test" onClick={() => this.fff()} />
+					</li>
+          <li>
+            <ChangeButton link="/" value="main" onClick={() => this.state()} />
+          </li>
+          <li>
+            <ChangeButton link="#1" value="page1" onClick={() => this.first()} />
+          </li>
+          <li>
+            <ChangeButton link="#2" value="page2" onClick={() => this.second()} />
+          </li>
+        </ul>
+        {this.state.value}
+        </div>
     );
   }
 }
+
+// export default class App extends Component {
+//   render() {
+//     return (
+//       <div>
+//         <Body />
+//       </div>
+//     );
+//   }
+// }
